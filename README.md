@@ -15,4 +15,4 @@ Public datasets used in this study are listed as follows and available from thei
 | CT-RATE    | [https://huggingface.co/datasets/ibrahimhamamci/CT-RATE](https://huggingface.co/datasets/ibrahimhamamci/CT-RATE)                                     |
 
 ## Code
-The source code and trained model weights for LuCaFound developed in this study will be uploaded soon.
+The source code and trained model weights for LuCaFound developed in this study have been uploaded.

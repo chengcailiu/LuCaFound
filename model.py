@@ -6,9 +6,9 @@ from torchvision.models.video import Swin3D_B_Weights
 from safetensors.torch import load_file
 import warnings
 
-class Swin3DforPretrain(nn.Module):
+class ModelforPretrain(nn.Module):
     def __init__(self, args=None):
-        super(Swin3DforPretrain, self).__init__()
+        super(ModelforPretrain, self).__init__()
         weights=Swin3D_B_Weights.KINETICS400_IMAGENET22K_V1
         self.model =  torchvision.models.video.swin3d_b(num_classes=400, weights=weights)
         self.model.head = nn.Identity()

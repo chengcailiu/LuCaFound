@@ -15,4 +15,35 @@ Public datasets used in this study are listed as follows and available from thei
 | CT-RATE    | [https://huggingface.co/datasets/ibrahimhamamci/CT-RATE](https://huggingface.co/datasets/ibrahimhamamci/CT-RATE)                                     |
 
 ## Code
-The source code and trained model weights for LuCaFound developed in this study have been uploaded.
+
+This section explains how to set up the environment, preprocess data, define/load the model, extract features, and fine-tune on downstream tasks.  
+
+### 1 Environment Setup
+
+We recommend using **conda** (see `environment.yml`):  
+
+```bash
+# Create environment
+conda env create -f environment.yml
+conda activate lucafound
+
+# Install local package
+pip install -e .
+```
+
+---
+
+### 2 Data Preprocessing (`data_preprocess.py`)
+
+`data_preprocess.py` automatically handles CT preprocessing. Only the image path (DICOM folder or NIfTI file) and CUDA device need to be specified:  
+
+```bash
+python data_preprocess.py   --img_path /path/to/CT.nii.gz   --cuda 0
+```
+
+- `--img_path`: path to input CT (NIfTI `.nii/.nii.gz` or DICOM folder)  
+- `--cuda`: GPU id (e.g., `0`), defaults to CPU if not specified  
+
+The output includes the lung ROI and lung mask images.
+
+---

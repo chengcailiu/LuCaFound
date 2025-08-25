@@ -1,6 +1,6 @@
 <table>
 <tr>
-<td><img src="docs/figures/ct_example.png" width="600" alt="Lung CT Example"></td>
+<td><img src="docs/figures/ct_example.png" width="300" alt="Lung CT Example"></td>
 <td><h1>LuCaFound: A Disease-specific Vision–Language Foundation Model for Comprehensive Clinical Assessment in Lung Cancer</h1></td>
 </tr>
 </table>

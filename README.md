@@ -68,6 +68,7 @@ Outputs include the processed CT volume and lung mask saved under `./processed/`
 ### 2.3 Model Definition & Weight Loading (`model.py`)
 
 The model encoder and weight-loading utilities are provided in `model.py`.  
+**Please download the pretrained weights** from the [release link](https://github.com/chengcailiu/LuCaFound/releases/download/weight/model.pt) and place the file under the local directory `./weights/` before running the following code.
 
 ```python
 from model import ModelforExtractFea

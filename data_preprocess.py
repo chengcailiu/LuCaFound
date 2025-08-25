@@ -66,11 +66,11 @@ if __name__ == '__main__':
     ### cuda
     parser.add_argument('--cuda', type=str, default='0')
     ### dicom dir / nii path
-    parser.add_argument('--img_path', type=str, default='/data1/lcc/log/CLIP/downstream_task/20241219mae2/10上传github/processed/1.3.6.1.4.1.32722.99.99.23507740616018260882925674231000042364_img.nii.gz')
+    parser.add_argument('--img_path', type=str, default='')
     args = parser.parse_args()
 
     os.environ["CUDA_VISIBLE_DEVICES"] = args.cuda
-    inferer = LMInferer(batch_size=8)
+    inferer = LMInferer(batch_size=100)
 
     ### see rpptdir is dir or nii file
 

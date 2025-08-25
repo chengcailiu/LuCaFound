@@ -1,0 +1,1 @@
+**Please download the pretrained weights** from the [release link](https://github.com/chengcailiu/LuCaFound/releases/download/weight/model.pt) and place the file under this directory `./weights/` before model definition and weight loading.

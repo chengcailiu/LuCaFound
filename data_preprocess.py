@@ -64,7 +64,7 @@ if __name__ == '__main__':
     
     parser = argparse.ArgumentParser()
     ### cuda
-    parser.add_argument('--cuda', type=str, default='0')
+    parser.add_argument('--cuda', type=str, default='')
     ### dicom dir / nii path
     parser.add_argument('--img_path', type=str, default='')
     args = parser.parse_args()

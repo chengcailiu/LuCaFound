@@ -68,26 +68,24 @@ model = ModelforExtractFea(args=args)
 
 ---
 
-### 4 Feature Extraction Example
+### 4 Feature Extraction Example （`extract_features.py`）
 
 ```python
-import torch
 from model import ModelforExtractFea
-from data_preprocess import preprocess_img  # assumed API
+from extract_features import data_process
+import argparse
+parser = argparse.ArgumentParser()
+## pretrained model
+parser.add_argument('--pretrained', type=str, default='/data1/lcc/log/CLIP/downstream_task/20241219mae2/10上传github/model.pt', help='pretrained model path')
+parser.add_argument('--save_feature', type=bool, default=True, help='save feature')
+parser.add_argument('--cuda', type=str, default='0', help='cuda')
+parser.add_argument('--img_path', type=str, default='', help='DICOM directory or NIfTI file')
+args = parser.parse_args()
 
-# 1) Preprocess image
-img_tensor = preprocess_img("/path/to/CT.nii.gz", cuda=0)  # shape: [1,1,D,H,W]
-
-# 2) Load model and weights
+img = data_process(args.img_path)
 model = ModelforExtractFea(args=args)
-state_dict = torch.load("./weights/model.pt", map_location="cuda:0")
-model.load_state_dict(state_dict, strict=False)
-model.eval().cuda()
-
-# 3) Extract features
-with torch.no_grad():
-    features = model(img_tensor.cuda())   # output: [1, 1024]
-print("Feature shape:", features.shape)
+feature = model(img)
+print(feature.shape)
 ```
 
 The extracted **1024-d embedding** can be directly used for:  

@@ -16,7 +16,7 @@ It provides a unified framework for **efficient feature extraction** and **trans
 
 ## 1. Data
 
-Public datasets used in this study are listed below. Additional datasets are subject to access restrictions, but may be made available for academic research upon reasonable request to the corresponding author (shuo_wang@buaa.edu.cn).  
+Public datasets used in this study are listed below. Additional datasets are subject to access restrictions, but may be made available for academic research upon reasonable request to the corresponding author or the first author (shuo_wang@buaa.edu.cn).  
 
 | Dataset    | URL                                                                                                                                                  |
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |

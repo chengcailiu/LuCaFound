@@ -66,11 +66,11 @@ if __name__ == '__main__':
     ### cuda
     parser.add_argument('--cuda', type=str, default='0')
     ### dicom dir / nii path
-    parser.add_argument('--img_path', type=str, default='')
+    parser.add_argument('--img_path', type=str, default='/data1/lcc/log/CLIP/downstream_task/20241219mae2/10上传github/processed/1.3.6.1.4.1.32722.99.99.23507740616018260882925674231000042364_img.nii.gz')
     args = parser.parse_args()
 
     os.environ["CUDA_VISIBLE_DEVICES"] = args.cuda
-    inferer = LMInferer(batch_size=100)
+    inferer = LMInferer(batch_size=8)
 
     ### see rpptdir is dir or nii file
 
@@ -100,11 +100,18 @@ if __name__ == '__main__':
             sitk.WriteImage(nii_img, f'./processed/{imgseries_id}_img.nii.gz')
             sitk.WriteImage(nii_mask, f'./processed/{imgseries_id}_mask.nii.gz')
     elif os.path.isfile(args.img_path):
+
         try: 
             img = sitk.ReadImage(args.img_path)
         except Exception as e:
             print(e)
             exit('Read dicom error')
+
+        if '.nii.gz' in args.img_path:
+            imgseries_id = os.path.basename(args.img_path).split('.nii.gz')[0]
+        else:
+            imgseries_id = os.path.splitext(os.path.basename(args.img_path))[0]
+            
         print(f"Image shape: {img.GetSize()}")
         temp_data = img
         temp_mask = inferer.apply(temp_data)
@@ -121,10 +128,3 @@ if __name__ == '__main__':
         print('Please input dicom dir or nii file in args.img_path')
         exit()
     print(f'Processed {imgseries_id} done, saved to ./processed/{imgseries_id}_img.nii.gz and ./processed/{imgseries_id}_mask.nii.gz')
-
-
-
-
-
-
-

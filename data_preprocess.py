@@ -3,16 +3,10 @@ import time
 import SimpleITK as sitk
 import cv2
 import numpy as np
-import SimpleITK as sitk
-import os
 import csv
 from tqdm import tqdm
-import SimpleITK as sitk
-import os
 import json
-import numpy as np
 from lungmask import LMInferer
-from tqdm import tqdm
 import pandas as pd
 import argparse
 
@@ -68,12 +62,12 @@ def get_new_img_and_mask(img, mask, target_size=None):#img,
 
 if __name__ == '__main__':
     
-    args = parser.parse_args()
     parser = argparse.ArgumentParser()
     ### cuda
     parser.add_argument('--cuda', type=str, default='0')
     ### dicom dir / nii path
     parser.add_argument('--img_path', type=str, default='')
+    args = parser.parse_args()
 
     os.environ["CUDA_VISIBLE_DEVICES"] = args.cuda
     inferer = LMInferer(batch_size=100)

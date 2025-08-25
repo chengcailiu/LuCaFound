@@ -50,3 +50,49 @@ python data_preprocess.py   --img_path /path/to/CT.nii.gz   --cuda 0
 The output includes the lung ROI and lung mask images.
 
 ---
+
+### 3 Model Definition & Weight Loading (`model.py`)
+
+`model.py` provides the encoder definition and weight loading.
+We recommend downloading the pretrained weights from [model.pt](https://github.com/chengcailiu/LuCaFound/releases/download/weight/model.pt) to `./weights/`. 
+
+```python
+from model import ModelforExtractFea
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('--pretrained', type=str, default='./weights/model.pt', help='pretrained model path')
+parser.add_argument('--save_feature', type=bool, default=True, help='save feature')
+args = parser.parse_args()
+model = ModelforExtractFea(args=args)
+```
+
+---
+
+### 4 Feature Extraction Example
+
+```python
+import torch
+from model import ModelforExtractFea
+from data_preprocess import preprocess_img  # assumed API
+
+# 1) Preprocess image
+img_tensor = preprocess_img("/path/to/CT.nii.gz", cuda=0)  # shape: [1,1,D,H,W]
+
+# 2) Load model and weights
+model = ModelforExtractFea(args=args)
+state_dict = torch.load("./weights/model.pt", map_location="cuda:0")
+model.load_state_dict(state_dict, strict=False)
+model.eval().cuda()
+
+# 3) Extract features
+with torch.no_grad():
+    features = model(img_tensor.cuda())   # output: [1, 1024]
+print("Feature shape:", features.shape)
+```
+
+The extracted **1024-d embedding** can be directly used for:  
+- Downstream classification/regression tasks (e.g., histology, EGFR prediction)  
+- Multi-modal fusion with clinical/textual features  
+- Transfer learning with fine-tuning  
+
+---

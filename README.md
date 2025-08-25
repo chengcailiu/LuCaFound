@@ -1,32 +1,46 @@
-# A Disease-specific Vision–Language Foundation Model for Comprehensive Clinical Assessment in Lung Cancer
+<table>
+<tr>
+<td><img src="docs/figures/ct_example.png" width="900" alt="Lung CT Example"></td>
+<td><h1>LuCaFound: A Disease-specific Vision–Language Foundation Model for Comprehensive Clinical Assessment in Lung Cancer</h1></td>
+</tr>
+</table>
 
-**News**: Initial open-source release, supporting **efficient lung CT feature extraction** and **further fine-tuning**.  
-**Weights**: Pretrained encoder weights are released here → [model.pt](https://github.com/chengcailiu/LuCaFound/releases/download/weight/model.pt).  
 
-## Data
-Public datasets used in this study are listed as follows and available from their original repositories. Other datasets are subject to access restrictions, but may be available upon reasonable request for academic research purposes from the corresponding or first author (shuo_wang@buaa.edu.cn).
+LuCaFound is a **disease-specific vision–language foundation model** trained on large-scale chest CTs and paired radiology reports.  
+It provides a unified framework for **efficient feature extraction** and **transfer learning**, facilitating downstream applications such as **histology classification, EGFR mutation prediction, staging, and prognosis assessment**.
+
+
+**Weights**: Pretrained encoder weights are available here → [model.pt](https://github.com/chengcailiu/LuCaFound/releases/download/weight/model.pt).  
+
+---
+
+## 1. Data
+
+Public datasets used in this study are listed below. Additional datasets are subject to access restrictions, but may be made available for academic research upon reasonable request to the corresponding author (shuo_wang@buaa.edu.cn).  
 
 | Dataset    | URL                                                                                                                                                  |
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
 | DLCSD24    | [https://zenodo.org/records/10782891](https://zenodo.org/records/10782891)                                                                           |
 | LUNA16     | [https://luna16.grand-challenge.org](https://luna16.grand-challenge.org/)                                                                            |
-| TCIA       | [https://wiki.cancerimagingarchive.net/display/Public/NSCLC+Radiogenomics](https://wiki.cancerimagingarchive.net/display/Public/NSCLC+Radiogenomics) |
-| LUNG1      | [https://www.cancerimagingarchive.net/collection/nsclc-radiomics](https://www.cancerimagingarchive.net/collection/nsclc-radiomics)                   |
-| UCSF-PDGM  | [https://www.cancerimagingarchive.net/collection/ucsf-pdgm](https://www.cancerimagingarchive.net/collection/ucsf-pdgm)                               |
-| LUNG-PET   | [https://www.cancerimagingarchive.net/collection/lung-pet-ct-dx](https://www.cancerimagingarchive.net/collection/lung-pet-ct-dx)                     |
-| DEEPLESION | [https://nihcc.app.box.com/v/DeepLesion](https://nihcc.app.box.com/v/DeepLesion)                                                                     |
-| CT-RATE    | [https://huggingface.co/datasets/ibrahimhamamci/CT-RATE](https://huggingface.co/datasets/ibrahimhamamci/CT-RATE)                                     |
+| TCIA       | [NSCLC Radiogenomics](https://wiki.cancerimagingarchive.net/display/Public/NSCLC+Radiogenomics)                                                      |
+| LUNG1      | [NSCLC Radiomics](https://www.cancerimagingarchive.net/collection/nsclc-radiomics)                                                                   |
+| UCSF-PDGM  | [UCSF-PDGM](https://www.cancerimagingarchive.net/collection/ucsf-pdgm)                                                                               |
+| LUNG-PET   | [Lung PET-CT DX](https://www.cancerimagingarchive.net/collection/lung-pet-ct-dx)                                                                     |
+| DEEPLESION | [DeepLesion](https://nihcc.app.box.com/v/DeepLesion)                                                                                                 |
+| CT-RATE    | [CT-RATE](https://huggingface.co/datasets/ibrahimhamamci/CT-RATE)                                                                                    |
 
-## Code
+---
 
-This section explains how to set up the environment, preprocess data, define/load the model, extract features, and fine-tune on downstream tasks.  
+## 2. Code Usage
 
-### 1 Environment Setup
+This section details environment setup, data preprocessing, model initialization, and feature extraction.  
 
-We recommend using **conda** (see `environment.yml`):  
+### 2.1 Environment Setup
+
+We recommend using **conda** with the provided `environment.yml`:  
 
 ```bash
-# Create environment
+# Create and activate environment
 conda env create -f environment.yml
 conda activate lucafound
 
@@ -36,61 +50,75 @@ pip install -e .
 
 ---
 
-### 2 Data Preprocessing (`data_preprocess.py`)
+### 2.2 Data Preprocessing (`data_preprocess.py`)
 
-`data_preprocess.py` automatically handles CT preprocessing. Only the image path (DICOM folder or NIfTI file) and CUDA device need to be specified:  
+Automated preprocessing is provided to handle **DICOM series** or **NIfTI files**.  
 
 ```bash
 python data_preprocess.py   --img_path /path/to/CT.nii.gz   --cuda 0
 ```
 
-- `--img_path`: path to input CT (NIfTI `.nii/.nii.gz` or DICOM folder)  
-- `--cuda`: GPU id (e.g., `0`), defaults to CPU if not specified  
+- `--img_path`: path to CT image (NIfTI `.nii/.nii.gz` or DICOM directory)  
+- `--cuda`: GPU ID (e.g., `0`); defaults to CPU if unspecified  
 
-The output includes the lung ROI and lung mask images.
+Outputs include the processed CT volume and lung mask saved under `./processed/`.  
 
 ---
 
-### 3 Model Definition & Weight Loading (`model.py`)
+### 2.3 Model Definition & Weight Loading (`model.py`)
 
-`model.py` provides the encoder definition and weight loading.
-We recommend downloading the pretrained weights from [model.pt](https://github.com/chengcailiu/LuCaFound/releases/download/weight/model.pt) to `./weights/`. 
+The model encoder and weight-loading utilities are provided in `model.py`.  
 
 ```python
 from model import ModelforExtractFea
 import argparse
+
 parser = argparse.ArgumentParser()
-parser.add_argument('--pretrained', type=str, default='./weights/model.pt', help='pretrained model path')
-parser.add_argument('--save_feature', type=bool, default=True, help='save feature')
+parser.add_argument('--pretrained', type=str, default='./weights/model.pt', help='path to pretrained model')
+parser.add_argument('--save_feature', type=bool, default=True, help='save intermediate features')
 args = parser.parse_args()
+
+# Initialize model
 model = ModelforExtractFea(args=args)
 ```
 
 ---
 
-### 4 Feature Extraction Example （`extract_features.py`）
+### 2.4 Feature Extraction (`extract_features.py`)
 
 ```python
 from model import ModelforExtractFea
 from extract_features import data_process
 import argparse
+
 parser = argparse.ArgumentParser()
-## pretrained model
-parser.add_argument('--pretrained', type=str, default='/data1/lcc/log/CLIP/downstream_task/20241219mae2/10上传github/model.pt', help='pretrained model path')
+parser.add_argument('--pretrained', type=str, default='./weights/model.pt', help='path to pretrained model')
 parser.add_argument('--save_feature', type=bool, default=True, help='save feature')
-parser.add_argument('--cuda', type=str, default='0', help='cuda')
-parser.add_argument('--img_path', type=str, default='', help='DICOM directory or NIfTI file')
+parser.add_argument('--cuda', type=str, default='0', help='cuda device')
+parser.add_argument('--img_path', type=str, default='', help='Preprocessed NIfTI image file')
 args = parser.parse_args()
 
+# Preprocess input image
 img = data_process(args.img_path)
+
+# Load encoder
 model = ModelforExtractFea(args=args)
+
+# Extract features
 feature = model(img)
-print(feature.shape)
+print("Feature shape:", feature.shape)  # e.g. [1, 1024]
+
 ```
 
-The extracted **1024-d embedding** can be directly used for:  
-- Downstream classification/regression tasks (e.g., histology, EGFR prediction)  
-- Multi-modal fusion with clinical/textual features  
-- Transfer learning with fine-tuning  
+The extracted **1024-d feature vector** can be directly applied to:  
+- Downstream classification/regression (e.g., histology, EGFR mutation)  
+- Multi-modal fusion with clinical or textual data  
+- Transfer learning on new datasets  
+
+---
+
+### 🔎 Note on Fine-tuning
+
+For fine-tuning, you can easily use the provided model to adapt to your specific task by training it on your dataset.
 
 ---

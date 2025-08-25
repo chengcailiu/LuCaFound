@@ -52,7 +52,7 @@ pip install -e .
 
 ### 2.2 Data Preprocessing (`data_preprocess.py`)
 
-Automated preprocessing is provided to handle **DICOM series** or **NIfTI files**.  
+Automated preprocessing is implemented to support both **DICOM series** and **NIfTI files**.  
 
 ```bash
 python data_preprocess.py   --img_path /path/to/CT.nii.gz   --cuda 0
@@ -119,6 +119,6 @@ The extracted **1024-d feature vector** can be directly applied to:
 
 ### 🔎 Note on Fine-tuning
 
-For fine-tuning, you can easily use the provided model to adapt to your specific task by training it on your dataset.
+For fine-tuning, the provided model can be readily adapted to specific tasks by training on user-defined datasets.
 
 ---

@@ -1,7 +1,7 @@
 # A Disease-specific Vision–Language Foundation Model for Comprehensive Clinical Assessment in Lung Cancer
 
 **News**: Initial open-source release, supporting **efficient lung CT feature extraction** and **further fine-tuning**.  
-**Weights**: Pretrained encoder weights are released here → [model.safetensors](https://github.com/chengcailiu/LuCaFound/releases/download/weight/model.safetensors).  
+**Weights**: Pretrained encoder weights are released here → [model.safetensors](https://github.com/chengcailiu/LuCaFound/releases/download/weight/model.pt).  
 
 ## Data
 Public datasets used in this study are listed as follows and available from their original repositories. Other datasets are subject to access restrictions, but may be available upon reasonable request for academic research purposes from the corresponding or first author (shuo_wang@buaa.edu.cn).

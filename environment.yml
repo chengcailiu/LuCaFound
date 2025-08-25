@@ -1,0 +1,81 @@
+name: lucafound
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - pytorch>=2.2
+  - torchvision
+  - pytorch-cuda=12.1
+  - pip
+  - pip:
+      # Deep learning & acceleration
+      - accelerate>=1.5
+      - transformers>=4.46
+      - deepspeed
+      - peft
+      - einops
+      - fvcore
+      - iopath
+      - xformers
+      - nvitop
+      - grad-cam
+      - pytorch-msssim
+
+      # Medical imaging
+      - monai>=1.4
+      - lungmask
+      - nibabel
+      - pydicom
+      - pylidc
+      - python-gdcm
+      - SimpleITK
+      - dicom2nifti
+      - torchio
+      - totalsegmentator
+
+      # Data & scientific computing
+      - pandas
+      - numpy
+      - scikit-learn
+      - imbalanced-learn
+      - lifelines
+
+      # Visualization
+      - matplotlib
+      - seaborn
+      - plotly
+
+      # Video & image I/O
+      - opencv-python
+      - imageio
+      - av
+      - ffmpeg-python
+      - decord
+      - pillow
+
+      # Config & utilities
+      - pyyaml
+      - requests
+      - tqdm
+      - hjson
+      - omegaconf
+      - openmim
+      - pip-tools
+
+      # Segmentation / nnU-Net ecosystem
+      - nnunetv2
+      - dynamic-network-architectures
+      - batchgenerators
+      - batchgeneratorsv2
+      - connected-components-3d
+      - fill-voids
+      - fastremap
+      - segmentation-models-pytorch
+
+      # Other common libs
+      - scikit-image
+      - future
+      - yacs

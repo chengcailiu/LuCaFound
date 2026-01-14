@@ -5,77 +5,14 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.12
-  - pytorch>=2.2
-  - torchvision
-  - pytorch-cuda=12.1
+  - python=3.12.7
   - pip
   - pip:
-      # Deep learning & acceleration
-      - accelerate>=1.5
-      - transformers>=4.46
-      - deepspeed
-      - peft
-      - einops
-      - fvcore
-      - iopath
-      - xformers
-      - nvitop
-      - grad-cam
-      - pytorch-msssim
-
-      # Medical imaging
-      - monai>=1.4
+      - SimpleITK>=2.3.1
+      - opencv-python>=4.9.0.80
+      - numpy>=1.26.4
+      - tqdm>=4.66.5
       - lungmask
-      - nibabel
-      - pydicom
-      - pylidc
-      - python-gdcm
-      - SimpleITK
-      - dicom2nifti
-      - torchio
-      - totalsegmentator
-
-      # Data & scientific computing
-      - pandas
-      - numpy
-      - scikit-learn
-      - imbalanced-learn
-      - lifelines
-
-      # Visualization
-      - matplotlib
-      - seaborn
-      - plotly
-
-      # Video & image I/O
-      - opencv-python
-      - imageio
-      - av
-      - ffmpeg-python
-      - decord
-      - pillow
-
-      # Config & utilities
-      - pyyaml
-      - requests
-      - tqdm
-      - hjson
-      - omegaconf
-      - openmim
-      - pip-tools
-
-      # Segmentation / nnU-Net ecosystem
-      - nnunetv2
-      - dynamic-network-architectures
-      - batchgenerators
-      - batchgeneratorsv2
-      - connected-components-3d
-      - fill-voids
-      - fastremap
-      - segmentation-models-pytorch
-
-      # Other common libs
-      - scikit-image
-      - future
-      - yacs
+      - pandas>=2.2.2
+      - torch>=2.4.1
+      - torchvision>=0.19.1

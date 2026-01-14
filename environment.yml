@@ -1,4 +1,4 @@
-name: lucafound
+name: lucafoundv2
 channels:
   - pytorch
   - nvidia

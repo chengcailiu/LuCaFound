@@ -61,6 +61,7 @@ if __name__ == '__main__':
     parser.add_argument('--pretrained', type=str, default='./weights/model.pt')
     parser.add_argument('--cuda', type=str, default='0')
     parser.add_argument('--img_path', type=str, required=True)
+    parser.add_argument('--save_feature', type=bool, default=True, help='save feature')
     args = parser.parse_args()
 
     if not os.path.exists(args.img_path):

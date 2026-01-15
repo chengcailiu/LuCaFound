@@ -21,6 +21,7 @@ if __name__ == '__main__':
     parser.add_argument('--pretrained', type=str, default='./weights/model.pt', help='pretrained model path')
     parser.add_argument('--cuda', type=str, default='0', help='cuda device id (e.g. 0, 1)')
     parser.add_argument('--img_path', type=str, default='', help='DICOM directory or NIfTI file')
+    parser.add_argument('--save_feature', type=bool, default=True, help='save feature')
     args = parser.parse_args()
     
     if not os.path.exists(args.img_path):

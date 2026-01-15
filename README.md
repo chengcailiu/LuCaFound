@@ -18,16 +18,18 @@ It provides a unified framework for **efficient feature extraction** and **trans
 
 Public datasets used in this study are listed below. Additional datasets are subject to access restrictions, but may be made available for academic research upon reasonable request to the corresponding author or the first author (shuo_wang@buaa.edu.cn).  
 
-| Dataset    | URL                                                                                                                                                  |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| DLCSD24    | [https://zenodo.org/records/10782891](https://zenodo.org/records/10782891)                                                                           |
-| LUNA16     | [https://luna16.grand-challenge.org](https://luna16.grand-challenge.org/)                                                                            |
-| TCIA       | [NSCLC Radiogenomics](https://wiki.cancerimagingarchive.net/display/Public/NSCLC+Radiogenomics)                                                      |
-| LUNG1      | [NSCLC Radiomics](https://www.cancerimagingarchive.net/collection/nsclc-radiomics)                                                                   |
-| UCSF-PDGM  | [UCSF-PDGM](https://www.cancerimagingarchive.net/collection/ucsf-pdgm)                                                                               |
-| LUNG-PET   | [Lung PET-CT DX](https://www.cancerimagingarchive.net/collection/lung-pet-ct-dx)                                                                     |
-| DEEPLESION | [DeepLesion](https://nihcc.app.box.com/v/DeepLesion)                                                                                                 |
-| CT-RATE    | [CT-RATE](https://huggingface.co/datasets/ibrahimhamamci/CT-RATE)                                                                                    |
+| Dataset     | URL                                                                                            |
+|-------------|------------------------------------------------------------------------------------------------|
+| DLCSD24     | [DLCSD24](https://zenodo.org/records/10782891)                     |
+| LUNA16      | [LUNA16](https://luna16.grand-challenge.org/)                       |
+| TCIA        | [NSCLC Radiogenomics](https://wiki.cancerimagingarchive.net/display/Public/NSCLC+Radiogenomics) |
+| LUNG1       | [NSCLC Radiomics](https://www.cancerimagingarchive.net/collection/nsclc-radiomics)             |
+| UCSF-PDGM   | [UCSF-PDGM](https://www.cancerimagingarchive.net/collection/ucsf-pdgm)                         |
+| LUNG-PET    | [Lung PET-CT DX](https://www.cancerimagingarchive.net/collection/lung-pet-ct-dx)               |
+| DEEPLESION  | [DeepLesion](https://nihcc.app.box.com/v/DeepLesion)                                           |
+| CT-RATE     | [CT-RATE](https://huggingface.co/datasets/ibrahimhamamci/CT-RATE)                              |
+| RAD-ChestCT | [RAD-ChestCT](https://zenodo.org/records/6406114)                                              |
+| TCIA NSCLC Radiogenomics        | [TCIA NSCLC Radiogenomics](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE103584)                                                                   |
 
 ---
 
@@ -35,17 +37,40 @@ Public datasets used in this study are listed below. Additional datasets are sub
 
 This section details environment setup, data preprocessing, model initialization, and feature extraction.  
 
-### 2.1 Environment Setup
+### 2.1 Environment Setup (`environment.yml` or `requirements.txt`)
 
-We recommend using **conda** with the provided `environment.yml`:  
+We provide **two optional methods** to set up the running environment; you can choose either based on your needs:
+
+First, you are encouraged to download this repository and navigate to the `LuCaFound-main/` directory.
+
+#### Method 1: Use `environment.yml` (Recommended, One-Click Deployment)
+This method leverages the pre-configured `environment.yml` file to create a Conda environment, ensuring consistent dependency versions across different systems.
 
 ```bash
-# Create and activate environment
+# Create Conda environment from environment.yml
 conda env create -f environment.yml
+
+# Activate the environment
+conda activate lucafound
+```
+#### Method 2: Manual Creation with Specified Python Version (Flexible, Optional Mirror Acceleration)
+This method manually specifies `Python 3.12.7` to create a Conda environment and installs dependencies via `requirements.txt`, offering flexibility for custom environment configurations.
+
+Note: The `-i https://pypi.tuna.tsinghua.edu.cn/simple/` parameter is optional. It accelerates package downloads using the Tsinghua University PyPI mirror.
+
+```bash
+# Create Conda environment named "lucafound" with Python 3.12.7
+conda create -n lucafound python=3.12.7 -y
+
+# Activate the environment
 conda activate lucafound
 
-# Install local package
-pip install -e .
+# Install dependencies (choose one of the following)
+# Option 1: Use official PyPI source (default)
+pip install -r requirements.txt
+
+# Option 2: Use Tsinghua PyPI mirror for acceleration (optional)
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
 ```
 
 ---
@@ -55,20 +80,29 @@ pip install -e .
 Automated preprocessing is implemented to support both **DICOM series** and **NIfTI files**.  
 
 ```bash
-python data_preprocess.py   --img_path /path/to/CT.nii.gz   --cuda 0
+# Our original pipeline is as follows:
+python data_preprocess.py   --img_path CT_example/   --cuda 0
+# CT_example/ is an example directory containing DICOM series
+
+# We also provide a MONAI pipeline for data preprocessing:
+python monai_pipeline/data_preprocess.py   --img_path CT_example/   --cuda 0
+# CT_example/ is an example directory containing DICOM series
 ```
 
 - `--img_path`: path to CT image (NIfTI `.nii/.nii.gz` or DICOM directory)  
-- `--cuda`: GPU ID (e.g., `0`); defaults to CPU if unspecified  
+- `--cuda`: GPU ID (e.g., `0`); defaults to CPU if unspecified
+- `--output_dir`: path to save processed CT volume and lung mask (default: `./processed/`)
+- `--target_size`: target size for resizing CT volume (default: `[48, 256, 256]`)
+- `inferer = LMInferer(batch_size=1)`: batch size for inference is set to 1, for minimum memory consumption, which is suitable for most applications.
 
-Outputs include the processed CT volume and lung mask saved under `./processed/`.  
+Outputs (the processed CT volume and lung mask) are saved under `./processed/` if `--output_dir` is not specified.  
 
 ---
 
 ### 2.3 Model Definition & Weight Loading (`model.py`)
 
 The model encoder and weight-loading utilities are provided in `model.py`.  
-**Please download the pretrained weights** from the [release link](https://github.com/chengcailiu/LuCaFound/releases/download/weight/model.pt) and place the file under the local directory `./weights/` before running the following code.
+**Please download the pretrained weights** from the [release link](https://github.com/chengcailiu/LuCaFound/releases/download/weight/model.pt) and place the file under the local directory `./` before running the following code.
 
 ```python
 from model import ModelforExtractFea
@@ -76,43 +110,31 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--pretrained', type=str, default='./weights/model.pt', help='path to pretrained model')
-parser.add_argument('--save_feature', type=bool, default=True, help='save intermediate features')
 args = parser.parse_args()
 
 # Initialize model
 model = ModelforExtractFea(args=args)
 ```
+- `--pretrained`: path to the pretrained model, defaults to `./weights/model.pt`
+
+
 
 ---
 
 ### 2.4 Feature Extraction (`extract_features.py`)
 
-```python
-from model import ModelforExtractFea
-from extract_features import data_process
-import argparse
-
-parser = argparse.ArgumentParser()
-parser.add_argument('--pretrained', type=str, default='./weights/model.pt', help='path to pretrained model')
-parser.add_argument('--save_feature', type=bool, default=True, help='save feature')
-parser.add_argument('--cuda', type=str, default='0', help='cuda device')
-parser.add_argument('--img_path', type=str, default='', help='Preprocessed NIfTI image file')
-args = parser.parse_args()
-
-# Preprocess input image
-img = data_process(args.img_path)
-
-# Load encoder
-model = ModelforExtractFea(args=args)
-
-# Extract features
-feature = model(img)
-print("Feature shape:", feature.shape)  # e.g. [1, 1024]
-
+```bash
+# Our original pipeline is as follows:
+python extract_features.py --img_path processed/1.3.6.1.4.1.32722.99.99.23507740616018260882925674231000042364_img.nii.gz --cuda 0
+# We also provide a MONAI pipeline for feature extraction:
+python monai_pipeline/extract_features.py --img_path processed/1.3.6.1.4.1.32722.99.99.23507740616018260882925674231000042364_img.nii.gz --cuda 0
+# processed/1.3.6.1.4.1.32722.99.99.23507740616018260882925674231000042364_img.nii.gz is an example directory containing processed CT volume
 ```
+- `--img_path`: path to processed CT volume (NIfTI `.nii/.nii.gz`)
+- `--cuda`: GPU ID (e.g., `0`); defaults to CPU if unspecified
 
 The extracted **1024-d feature vector** can be directly applied to:  
-- Downstream classification/regression (e.g., histology, EGFR mutation)  
+- Downstream classification/regression (e.g., EGFR mutation)  
 - Multi-modal fusion with clinical or textual data  
 - Transfer learning on new datasets  
 

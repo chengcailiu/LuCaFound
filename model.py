@@ -85,7 +85,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     ## pretrained model
-    parser.add_argument('--pretrained', type=str, default='/data1/lcc/log/CLIP/downstream_task/20241219mae2/10上传github/model.pt', help='pretrained model path')
+    parser.add_argument('--pretrained', type=str, default='./weights/model.pt', help='pretrained model path')
     parser.add_argument('--save_feature', type=bool, default=True, help='save feature')
     args = parser.parse_args()
 

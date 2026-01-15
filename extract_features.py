@@ -18,8 +18,7 @@ def data_process(path):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--pretrained', type=str, default='./model.pt', help='pretrained model path')
-    parser.add_argument('--save_feature', action='store_false', default=True, help='save feature (default: True, pass this arg to set False)')
+    parser.add_argument('--pretrained', type=str, default='./weights/model.pt', help='pretrained model path')
     parser.add_argument('--cuda', type=str, default='0', help='cuda device id (e.g. 0, 1)')
     parser.add_argument('--img_path', type=str, default='', help='DICOM directory or NIfTI file')
     args = parser.parse_args()

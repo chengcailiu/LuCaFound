@@ -11,7 +11,7 @@ def data_process(path):
     x = sitk.GetArrayFromImage(img)
     x = np.clip(x, -1500, 500) + 1500
     max_val = x.max()
-    x = x / max(max_val, 1e-8)
+    x = x / max_val
     x = torch.tensor(x, dtype=torch.float32).unsqueeze(0).unsqueeze(0)
     x = x.repeat(1, 3, 1, 1, 1)
     return x

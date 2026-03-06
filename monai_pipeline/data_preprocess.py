@@ -80,7 +80,7 @@ def monai_process_and_save(img_obj, mask_np, output_id, output_dir="./processed"
     # Set spacing (adjusted due to size change)
     # Assume isotropic voxels, set to [1.0, 1.0, 1.0]
     # Alternatively, calculate new spacing based on original spacing and scaling ratio
-    new_spacing = [1.0, 1.0, 1.0]
+    new_spacing = [1.0, 1.0, 3.0]
     image_itk.SetSpacing(new_spacing)
     mask_itk.SetSpacing(new_spacing)
 

@@ -30,7 +30,7 @@ if __name__ == '__main__':
     
     device = torch.device(f'cuda:{args.cuda}' if (torch.cuda.is_available() and args.cuda.isdigit()) else 'cpu')
     
-    img = data_process(args.img_path).to(device)
+    img = data_process(args.img_path).to(device).eval()
     
     if os.path.exists(args.pretrained):
         pass

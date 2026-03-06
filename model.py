@@ -13,7 +13,7 @@ import urllib.request
 def load_safetensors_from_path_or_url(path_or_url: str):
 
     if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
-        # 下载到临时文件
+        
         tmpdir = tempfile.mkdtemp()
         filename = os.path.basename(path_or_url)
         local_path = os.path.join(tmpdir, filename)
@@ -22,7 +22,7 @@ def load_safetensors_from_path_or_url(path_or_url: str):
         print(f"Downloaded to {local_path}")
         return torch.load(local_path, map_location="cpu")
     else:
-        # 本地文件
+        
         if not os.path.exists(path_or_url):
             raise FileNotFoundError(f"Pretrained weight file not found: {path_or_url}")
         return torch.load(path_or_url, map_location="cpu")
@@ -57,7 +57,7 @@ class ModelforExtractFea(nn.Module):
         super(ModelforExtractFea, self).__init__()
         self.args = args
         self.model =  torchvision.models.video.swin3d_b(num_classes=400)
-        ## 去掉model中的head这个key
+        
         self.model.head = nn.Identity()
         self.head = nn.Linear(in_features=400, out_features=num_classes, bias=True)
         

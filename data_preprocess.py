@@ -195,8 +195,8 @@ if __name__ == '__main__':
             nii_mask = sitk.GetImageFromArray(mask_array)
             
             spacing = nii_img.GetSpacing()
-            nii_img.SetSpacing((spacing[0], spacing[1], 3))
-            nii_mask.SetSpacing((spacing[0], spacing[1], 3))
+            nii_img.SetSpacing((1.0, 1.0, 3.0))
+            nii_mask.SetSpacing((1.0, 1.0, 3.0))
 
             # Save processed images
             sitk.WriteImage(nii_img, os.path.join(args.output_dir, f'{imgseries_id}_img.nii.gz'))

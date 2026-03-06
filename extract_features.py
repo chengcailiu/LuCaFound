@@ -30,14 +30,14 @@ if __name__ == '__main__':
     
     device = torch.device(f'cuda:{args.cuda}' if (torch.cuda.is_available() and args.cuda.isdigit()) else 'cpu')
     
-    img = data_process(args.img_path).to(device).eval()
+    img = data_process(args.img_path).to(device)
     
     if os.path.exists(args.pretrained):
         pass
     else:
         raise ValueError(f"Error: Pretrained model file {args.pretrained} not found! Please use --pretrained to set a available path of model's weight")
         
-    model = ModelforExtractFea(args=args).to(device)
+    model = ModelforExtractFea(args=args).to(device).eval()
 
     
     with torch.no_grad():

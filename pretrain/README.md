@@ -5,8 +5,6 @@ Official code release for the paper:
 
 **LuCaFound: A Disease-Specific Vision-Language Foundation Model for Comprehensive Clinical Assessment in Lung Cancer**
 
-This repository contains the pretraining code for the CT-report contrastive learning stage of LuCaFound. The codebase is organized around a Swin3D image encoder and a BERT text encoder for image-text representation learning on lung CT data and paired reports.
-
 
 ## What Is Included
 
@@ -43,8 +41,6 @@ python -m pip install -r requirements.txt
 ```
 
 If you do not have a local `bert-base-uncased/` folder, the code defaults to the Hugging Face model name `bert-base-uncased` and will download it automatically when needed.
-
-For a cleaner public release, we recommend not committing local model folders such as `bert-base-uncased/`.
 
 ## Data Preparation
 
@@ -83,14 +79,6 @@ Expected input and output naming:
 - input: original report text such as `case_0001_text_ori.txt`
 - output: generated 20-class text such as `case_0001_text_anomal.txt`
 
-The script is written for public release:
-
-- no hard-coded API keys
-- no hard-coded local absolute paths
-- deterministic default generation with `temperature=0.0`
-- output names aligned with the training pipeline
-- output is validated and normalized into the exact 20-line `finding-positive/negative` format before saving
-
 ### Step 3: Build the Training Manifest
 
 Training expects:
@@ -106,39 +94,12 @@ Each sample should provide:
 - `label_text`: relative path to the 20-class findings text under `data_root`
 - `report_text`: relative path to the original report text under `data_root`
 
-Recommended JSON sample format:
-
-```json
-{
-  "image": "images/case_0001.nii.gz",
-  "label_text": "reports/case_0001_text_anomal.txt",
-  "report_text": "reports/case_0001_text_ori.txt"
-}
-```
-
-Here:
-
-- `report_text` is the original report text
-- `label_text` is the generated 20-class finding text from `dig_abnormal.py`
-
-Backward compatibility:
-
-- older manifests using `text` are still supported and treated as `label_text`
-- if `report_text` is missing, the loader will try to infer the original report path from the 20-class text filename
-
 Supported image formats in the current dataset loader:
 
 - `.npy`
 - `.nii`
 - `.nii.gz`
 - `.pt`
-
-When `report_text` is omitted, the dataset loader supports several original-report filename conventions for compatibility, including:
-
-- `*_text_ori.txt`
-- `*_ori.txt`
-- `*_text.txt`
-- older exports such as `*_text_text_ori.txt`
 
 ## Training
 

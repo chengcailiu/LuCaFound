@@ -3,7 +3,7 @@ This README provides instructions for the pretraining stage of LuCaFound.
 
 Official code release for the paper:
 
-**LuCaFound: A Disease-Specific Vision-Language Foundation Model for Comprehensive Clinical Assessment in Lung Cancer**
+**LuCaFound: A Disease-specific Vision–Language Foundation Model for Comprehensive Clinical Assessment in Lung Cancer**
 
 
 ## What Is Included

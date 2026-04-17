@@ -11,7 +11,7 @@ It provides a unified framework for **efficient feature extraction** and **trans
 
 
 **Weights**: Pretrained encoder weights are available here → [model.pt](https://github.com/chengcailiu/LuCaFound/releases/download/weight/model.pt).  
-
+**Update**: We have updated the pretraining code. If you want to pretrain on your own dataset, please go to the `/pretrain` folder.
 ---
 
 ## 1. Data
@@ -102,7 +102,7 @@ Outputs (the processed CT volume and lung mask) are saved under `./processed/` i
 ### 2.3 Model Definition & Weight Loading (`model.py`)
 
 The model encoder and weight-loading utilities are provided in `model.py`.  
-**Please download the pretrained weights** from the [release link](https://github.com/chengcailiu/LuCaFound/releases/download/weight/model.pt) and place the file under the local directory `./weights` before running the following code.
+**Please download the pretrained weights** from the [release link](https://github.com/chengcailiu/LuCaFound/releases/download/weight/model.pt) and place the file under the local directory `./weights` before running the following code. We have updated the pretraining code. If you want to pretrain on your own dataset, please go to the `/pretrain` folder.
 
 ```python
 from model import ModelforExtractFea

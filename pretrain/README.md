@@ -1,4 +1,5 @@
-# LuCaFound
+# LuCaFound Pretraining
+This README provides instructions for the pretraining stage of LuCaFound.
 
 Official code release for the paper:
 
@@ -6,13 +7,6 @@ Official code release for the paper:
 
 This repository contains the pretraining code for the CT-report contrastive learning stage of LuCaFound. The codebase is organized around a Swin3D image encoder and a BERT text encoder for image-text representation learning on lung CT data and paired reports.
 
-The intended pretraining workflow is:
-
-1. Use the CT volume path to load the image.
-2. Use the 20-class text path to load the structured 20-class findings text.
-3. Extract 20 binary supervision labels from that 20-class findings text.
-4. Use the original report path to load the raw report text.
-5. Use the original report text for text encoding, and use the 20-class labels for the auxiliary multi-label classification loss during pretraining.
 
 ## What Is Included
 
@@ -21,12 +15,6 @@ The intended pretraining workflow is:
 - an example dataset manifest
 - a one-command smoke test with synthetic data
 - single-process debugging support and distributed-training compatibility
-
-## What Is Not Included
-
-- private training data
-- released pretrained checkpoints for the main project
-- a final repository license selection
 
 ## Repository Structure
 
@@ -208,27 +196,6 @@ The smoke test follows the same logic as the main pretraining task:
 - `label_text` provides the 20-class supervision labels
 - `report_text` provides the original report text for text encoding
 
-## Release Notes
-
-This repository has been cleaned for an initial public release:
-
-- non-essential generated artifacts are excluded from version control
-- single-process training defaults are fixed for local debugging
-- dataset text filename handling is more robust across common naming conventions
-- a minimal smoke test is included for quick verification
-
-## Before Publishing
-
-- choose and add a `LICENSE` file
-- remove the local `bert-base-uncased/` directory if you do not want to ship model files
-- replace placeholder paper metadata with the final citation information if needed
-
-## Notes For Public Release
-
-- `bert-base-uncased/` is large and usually does not need to be committed if users can download it themselves.
-- Check carefully before publishing any example data, pretrained weights, or private metadata.
-- If you plan to open-source the repository formally, consider adding a `LICENSE` file and a paper citation section after confirming the license you want to use.
-
 ## Contact
 
-If you use this repository for academic research, please cite the corresponding paper when it is available.
+If you use this repository for academic research, please cite the corresponding paper when it is available. If you have any questions or need assistance, please contact out to us (shuo_wang@buaa.edu.cn or chengcailiu@buaa.edu.cn).

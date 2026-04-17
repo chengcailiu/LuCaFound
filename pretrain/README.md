@@ -55,7 +55,7 @@ The recommended preprocessing order is:
 You can preprocess your CT image data based on the CT data preprocessing code from the parent directory.
 
 
-### Step 2: Generate 20-Class Finding Text
+### Step 2: Generate 20-Class Finding Text (`dig_abnormal.py`)
 
 `dig_abnormal.py` uses an LLM API to convert each original report into a fixed-order 20-class finding summary. This generated file is used as `label_text` during pretraining.
 
@@ -79,7 +79,7 @@ Expected input and output naming:
 - input: original report text such as `case_0001_text_ori.txt`
 - output: generated 20-class text such as `case_0001_text_anomal.txt`
 
-### Step 3: Build the Training Manifest
+### Step 3: Build the Training Manifest (`example_caption_data.json`)
 
 Training expects:
 
@@ -101,7 +101,7 @@ Supported image formats in the current dataset loader:
 - `.nii.gz`
 - `.pt`
 
-## Training
+## Training (`train_CLIP.py`)
 
 Example command:
 
@@ -135,7 +135,7 @@ Important arguments:
 - `--img_size`: input CT size in `depth,height,width` format
 - `--ifclsoridata`: enabled by default; keeps the 20-class auxiliary supervision active
 
-## Smoke Test
+## Smoke Test (`smoke_test.py`)
 
 You can run a minimal end-to-end check with synthetic data:
 

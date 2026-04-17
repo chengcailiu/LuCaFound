@@ -1,0 +1,23 @@
+{
+  "train": [
+    {
+      "image": "images/case_0001.nii.gz",
+      "label_text": "reports/case_0001_text_anomal.txt",
+      "report_text": "reports/case_0001_text_ori.txt"
+    }
+  ],
+  "validation": [
+    {
+      "image": "images/case_0002.nii.gz",
+      "label_text": "reports/case_0002_text_anomal.txt",
+      "report_text": "reports/case_0002_text_ori.txt"
+    }
+  ],
+  "test": [
+    {
+      "image": "images/case_0003.nii.gz",
+      "label_text": "reports/case_0003_text_anomal.txt",
+      "report_text": "reports/case_0003_text_ori.txt"
+    }
+  ]
+}

@@ -12,6 +12,7 @@ It provides a unified framework for **efficient feature extraction** and **trans
 
 **Weights**: Pretrained encoder weights are available here → [model.pt](https://github.com/chengcailiu/LuCaFound/releases/download/weight/model.pt).  
 **Update**: We have updated the pretraining code. If you want to pretrain on your own dataset, please go to the `/pretrain` folder.
+
 ---
 
 ## 1. Data

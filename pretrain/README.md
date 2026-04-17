@@ -31,7 +31,7 @@ The intended pretraining workflow is:
 ## Repository Structure
 
 ```text
-LUCAFOUND/
+pretrain/
 |-- train_CLIP.py                  # Training entrypoint
 |-- swinCLIP_20cls.py              # Vision-language model definition
 |-- swin3d.py                      # 3D Swin image encoder wrapper

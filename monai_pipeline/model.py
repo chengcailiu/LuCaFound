@@ -22,7 +22,7 @@ def load_safetensors_from_path_or_url(path_or_url: str):
         print(f"Downloaded to {local_path}")
         return torch.load(local_path, map_location="cpu")
     else:
-       
+        
         if not os.path.exists(path_or_url):
             raise FileNotFoundError(f"Pretrained weight file not found: {path_or_url}")
         return torch.load(path_or_url, map_location="cpu")
@@ -33,7 +33,7 @@ class ModelforPretrain(nn.Module):
         super(ModelforPretrain, self).__init__()
         weights=Swin3D_B_Weights.KINETICS400_IMAGENET22K_V1
         self.model =  torchvision.models.video.swin3d_b(num_classes=400, weights=weights)
-        self.model.head = nn.Identity()
+        self.model.head = nn.Identity()  # Remove original head, retain 1024-dim features
         self.args = args
             
         
@@ -58,8 +58,16 @@ class ModelforExtractFea(nn.Module):
         self.args = args
         self.model =  torchvision.models.video.swin3d_b(num_classes=400)
         
-        self.model.head = nn.Identity()
-        self.head = nn.Linear(in_features=400, out_features=num_classes, bias=True)
+        self.model.head = nn.Identity() # Retain 1024-dim features from backbone
+        
+        # ========== Core modification: Two-layer head (1024→400→num_classes) ==========
+        p = 0.0
+        self.head = nn.Sequential(
+            nn.Linear(in_features=1024, out_features=400, bias=True),  # First layer: 1024→400
+            nn.ReLU(inplace=True),  # Optional: Add activation for better expressiveness
+            nn.Dropout(p),        # Optional: Add dropout to prevent overfitting
+            nn.Linear(in_features=400, out_features=num_classes, bias=True)  # Second layer: 400→target num_classes
+        )
         
 
         if args.pretrained:
@@ -95,6 +103,3 @@ if __name__ == '__main__':
     x = torch.randn(1, 3, 48, 256, 256)
     out = model(x)
     print(out.shape)
-
-
-

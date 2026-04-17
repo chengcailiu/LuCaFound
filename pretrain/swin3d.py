@@ -24,7 +24,7 @@ class Swin3DforPretrain(nn.Module):
                 print("load pretrained model")
                 new_dict = {}
 
-                # 使用 safetensors 加载模型
+                
                 ckpt0 = load_file(self.args.my_pretrained)
 
                 for k,v in ckpt0.items():

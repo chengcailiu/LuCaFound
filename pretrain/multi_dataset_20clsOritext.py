@@ -59,9 +59,9 @@ def resize3D(img, size, interpolation=cv2.INTER_CUBIC):
 
 def one_hot_encode(tensor):
     num_classes = int(tensor.max() + 1)
-    # 创建一个全零的张量，形状为 (tensor.shape[0], num_classes)
+
     one_hot = torch.zeros(tensor.shape[0], num_classes)
-    # 使用 scatter_ 函数将相应位置置为 1
+
     one_hot.scatter_(1, tensor.unsqueeze(1), 1)
     return one_hot
 

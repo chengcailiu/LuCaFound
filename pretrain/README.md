@@ -66,7 +66,12 @@ The recommended preprocessing order is:
 2. Run `dig_abnormal.py` to convert original reports into 20-class finding text files.
 3. Build the JSON manifest with `image`, `label_text`, and `report_text`.
 
-### Step 1: Generate 20-Class Finding Text
+### Step 1: Data Preprocessing (`LuCaFound/data_preprocess.py` or `./data_preprocess.py`)
+
+You can preprocess your CT image data based on the CT data preprocessing code from the parent directory.
+
+
+### Step 2: Generate 20-Class Finding Text
 
 `dig_abnormal.py` uses an LLM API to convert each original report into a fixed-order 20-class finding summary. This generated file is used as `label_text` during pretraining.
 
@@ -98,7 +103,7 @@ The script is written for public release:
 - output names aligned with the training pipeline
 - output is validated and normalized into the exact 20-line `finding-positive/negative` format before saving
 
-### Step 2: Build the Training Manifest
+### Step 3: Build the Training Manifest
 
 Training expects:
 

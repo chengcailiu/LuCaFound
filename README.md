@@ -145,3 +145,14 @@ The extracted **1024-d feature vector** can be directly applied to:
 For fine-tuning, the provided model can be readily adapted to specific tasks by training on user-defined datasets.
 
 ---
+
+## Chest CT Report Generation
+
+We provide code and pretrained weights for generating radiology reports from preprocessed chest CT scans. The model is available at [ModelScope: LuCaFound LLM Open Dig 4-15](https://www.modelscope.cn/models/liu2succ/lucafound_llm_open_dig_4-15/), where you can download both the code and the weights.
+
+**Usage:**
+1. Preprocess your chest CT scans as **described in the preprocessing pipeline**.
+2. Load the pretrained weights from the above link.
+3. Run the provided inference scripts to generate structured or free-text radiology reports from the preprocessed CT images.
+
+---
